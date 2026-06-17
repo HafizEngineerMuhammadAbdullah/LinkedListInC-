@@ -194,6 +194,126 @@ public:
     addTwoLinkedList(ll1.head, ll2.head);
   }
 };
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* resultHead = nullptr;
+    ListNode* resultTail = nullptr;
+    ListNode* reverseLL(ListNode* head) { // TC:O(n)
+        if (head == NULL) {
+            cout << "LinkedList is Empty!" << endl;
+            return NULL;
+        }
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+        ListNode* next = NULL;
+
+        while (curr != NULL) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* temp1 = reverseLL(l1);
+        ListNode* temp2 = reverseLL(l2);
+
+        int carry = 0;
+        int res;
+        int firstDigit;
+        int secDigit;
+        while (temp1 != NULL && temp2 != NULL) {
+            res = temp1->val + temp2->val;
+            firstDigit = res / 10;
+            secDigit = res % 10;
+            ListNode* newNode = new ListNode(secDigit + carry);
+            //   ll.push_back(secDigit + carry);
+            if (resultHead == nullptr || resultTail == nullptr) {
+                resultHead = resultTail = newNode;
+            } else {
+                resultTail->next = newNode;
+                resultTail = newNode;
+            }
+            carry = firstDigit;
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+
+        if (temp1 != NULL) {
+            while (temp1 != NULL) {
+                res = carry + temp1->val;
+                firstDigit = res / 10;
+                secDigit = res % 10;
+                ListNode* newNode = new ListNode(secDigit);
+                if (resultHead == nullptr) {
+                    resultHead = resultTail = newNode;
+                } else {
+                    resultTail->next = newNode;
+                    resultTail = newNode;
+                }
+                carry = firstDigit;
+                temp1 = temp1->next;
+            }
+            if (carry != 0) {
+                ListNode* newNode = new ListNode(carry);
+                if (resultHead == nullptr) {
+                    resultHead = resultTail = newNode;
+                } else {
+                    resultTail->next = newNode;
+                    resultTail = newNode;
+                }
+            }
+        } else if (temp2 != NULL) {
+            while (temp2 != NULL) {
+                res = carry + temp2->val;
+                firstDigit = res / 10;
+                secDigit = res % 10;
+                ListNode* newNode = new ListNode(secDigit);
+                if (resultHead == nullptr) {
+                    resultHead = resultTail = newNode;
+                } else {
+                    resultTail->next = newNode;
+                    resultTail = newNode;
+                }
+                carry = firstDigit;
+                temp2 = temp2->next;
+            }
+            if (carry != 0) {
+                ListNode* newNode = new ListNode(carry);
+                if (resultHead == nullptr) {
+                    resultHead = resultTail = newNode;
+                } else {
+                    resultTail->next = newNode;
+                    resultTail = newNode;
+                }
+            }
+            if (carry != 0) {
+                ListNode* newNode = new ListNode(carry);
+                if (resultHead == nullptr) {
+                    resultHead = resultTail = newNode;
+                } else {
+                    resultTail->next = newNode;
+                    resultTail = newNode;
+                }
+            }
+        }
+
+        return resultHead;
+    }
+};
 int main() {
   LinkedList lll;
   lll.addTwoLinkedList();
